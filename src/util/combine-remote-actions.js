@@ -1,5 +1,4 @@
-import * from actions as '../actions';
-
+import * as actions from '../actions';
 
 export function combineRemoteActions(provider) {
   // Send back the configured actions.

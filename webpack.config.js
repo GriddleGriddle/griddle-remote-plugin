@@ -12,7 +12,7 @@ module.exports = {
   entry: './src/index',
   output: {
     path: __dirname + '/build/',
-    filename: 'griddle-render.js',
+    filename: 'griddle-remote-plugin.js',
     publicPath: '/build/',
     libraryTarget: 'umd'
   },
@@ -23,7 +23,8 @@ module.exports = {
   },
   externals: {
     'react': reactExternal,
-    'superagent': 'superagent'
+    'superagent': 'superagent',
+    'griddle-core': 'griddle-core'
   },
   module: {
     loaders: [{

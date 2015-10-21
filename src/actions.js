@@ -1,5 +1,5 @@
 import * as types from './constants';
-import { GriddleActions } from './griddle-core';
+import { GriddleActions } from 'griddle-core';
 
 export function remoteError(err, response) {
   // TODO: Include a little more information about this error.
