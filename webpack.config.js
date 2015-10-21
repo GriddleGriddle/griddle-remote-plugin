@@ -24,7 +24,8 @@ module.exports = {
   externals: {
     'react': reactExternal,
     'superagent': 'superagent',
-    'griddle-core': 'griddle-core'
+    'griddle-core': 'griddle-core',
+    'immutable': 'immutable'
   },
   module: {
     loaders: [{
