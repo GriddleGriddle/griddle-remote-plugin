@@ -1,6 +1,6 @@
-import { * as constants } from './constants';
-import { * as helpers } from './helpers';
-import { * as reducer } from './reducer';
+import * as constants from './constants';
+import * as helpers from './helpers';
+import * as reducer from './reducer';
 import { default as initialState } from './initial-state';
 
 export { constants as constants};

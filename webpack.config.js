@@ -30,7 +30,11 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel'],
+      loader: 'babel',
+      query: {
+        'plugins': ['babel-plugin-object-assign'],
+        'stage': 0
+      },
       exclude: /node_modules/,
     } ]
   }
