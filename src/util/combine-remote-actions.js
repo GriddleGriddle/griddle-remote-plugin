@@ -1,6 +1,6 @@
 import * as actions from '../actions';
 
-export function combineRemoteActions(provider, remoteConfig) {
+export default function combineRemoteActions(provider, remoteConfig) {
   // bind the remote config the the provider's 'makeRequest' function.
   if (provider.makeRequest) {
     provider.makeRequest = provider.makeRequest.bind(null, remoteConfig);

@@ -2,7 +2,7 @@
   "name": "griddle-remote-plugin",
   "version": "0.0.1",
   "description": "A plugin for loading data remotely.",
-  "main": "index.js",
+  "main": "./build/griddle-remote-plugin.js",
   "scripts": {
     "test": "karma start --browsers PhantomJS",
     "start": "./node_modules/.bin/webpack --config webpack.config.js --watch",

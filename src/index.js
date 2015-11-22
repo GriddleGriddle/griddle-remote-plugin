@@ -1,10 +1,11 @@
 import * as actions from './actions';
 import * as constants from './constants';
 import * as helpers from './helpers';
-import * as reducer from './reducer';
+import * as reducers from './reducer';
 import { default as initialState } from './initial-state';
+import combineRemoteActions from './util/combine-remote-actions';
 
-export default function RemotePlugin(provider, remoteConfig) {
+export function RemotePlugin(provider, remoteConfig) {
   return {
     name: 'GriddleRemote',
     actions: combineRemoteActions(provider, remoteConfig),
