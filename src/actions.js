@@ -40,8 +40,8 @@ export function filterData(response, filter) {
   };
 }
 
-export function filterDataRemote(remoteConfig, tableState) {
-  return makeRequest(remoteConfig, tableState, (response) => {
+export function filterDataRemote(tableState) {
+  return makeRequest(tableState, (response) => {
     return filterData(response, tableState.filter);
   });
 }
@@ -61,8 +61,8 @@ export function setPageSize(response, pageSize) {
   };
 }
 
-export function setPageSizeRemote(remoteConfig, tableState) {
-  return makeRequest(remoteConfig, tableState, (response) => {
+export function setPageSizeRemote(tableState) {
+  return makeRequest(tableState, (response) => {
     return setPageSize(response, tableState.pageSize);
   });
 }
@@ -82,8 +82,8 @@ export function sort(response, sortColumn) {
   };
 }
 
-export function sortRemote(remoteConfig, tableState) {
-  return makeRequest(remoteConfig, tableState, (response) => {
+export function sortRemote(tableState) {
+  return makeRequest(tableState, (response) => {
     return sort(response, tableState.sortColumn);
   });
 }
@@ -103,8 +103,8 @@ export function addSortColumn(response, sortColumn) {
   };
 }
 
-export function addSortColumnRemote(remoteConfig, tableState) {
-  return makeRequest(remoteConfig, tableState, (response) => {
+export function addSortColumnRemote(tableState) {
+  return makeRequest(tableState, (response) => {
     return addSortColumn(response, tableState.sortColumn);
   });
 }
@@ -124,8 +124,8 @@ export function loadNext(response) {
   }
 }
 
-export function loadNextRemote(remoteConfig, tableState) {
-  return makeRequest(remoteConfig, tableState, (response) => {
+export function loadNextRemote(tableState) {
+  return makeRequest(tableState, (response) => {
     return loadNext(response);
   });
 }
@@ -145,8 +145,8 @@ export function loadPrevious(response) {
   };
 }
 
-export function loadPreviousRemote(remoteConfig, tableState) {
-  return makeRequest(remoteConfig, tableState, (response) => {
+export function loadPreviousRemote(tableState) {
+  return makeRequest(tableState, (response) => {
     return loadPrevious(response);
   });
 }
@@ -166,8 +166,8 @@ export function loadPage(response) {
   };
 }
 
-export function loadPageRemote(remoteConfig, tableState) {
-  return makeRequest(remoteConfig, tableState, (response) => {
+export function loadPageRemote(tableState) {
+  return makeRequest(tableState, (response) => {
     return loadPage(response);
   });
 }
