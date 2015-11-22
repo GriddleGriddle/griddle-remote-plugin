@@ -1,4 +1,5 @@
 import * as types from './constants';
+import getTableState from './util/get-table-state';
 import { GriddleActions } from 'griddle-core';
 
 export function remoteError(err, response) {
@@ -25,7 +26,18 @@ export function initializeGrid() {
   }
 }
 
-export function filterData(response, filter) {
+export function filterData(store, filter) {
+  const tableState = {
+    ...getTableState(store),
+    filter
+  };
+
+  return makeRequest(tableState, (response) => {
+    return filterDataRemoteHandler(response, filter);
+  });
+}
+
+export function filterDataRemoteHandler(response, filter) {
   return dispatch => {
     // Append the data.
     dispatch({
@@ -40,13 +52,18 @@ export function filterData(response, filter) {
   };
 }
 
-export function filterDataRemote(tableState) {
+export function setPageSize(store, pageSize) {
+  const tableState = {
+    ...getTableState(store),
+    pageSize
+  };
+
   return makeRequest(tableState, (response) => {
-    return filterData(response, tableState.filter);
+    return setPageSizeRemoteHandler(response, pageSize);
   });
 }
 
-export function setPageSize(response, pageSize) {
+export function setPageSizeRemoteHandler(response, pageSize) {
   return dispatch => {
     // Append the data.
     dispatch({
@@ -61,13 +78,18 @@ export function setPageSize(response, pageSize) {
   };
 }
 
-export function setPageSizeRemote(tableState) {
+export function sort(store, column) {
+  const tableState = {
+    ...getTableState(store),
+    column: [column]
+  };
+
   return makeRequest(tableState, (response) => {
-    return setPageSize(response, tableState.pageSize);
+    return sortRemoteHandler(response, column);
   });
 }
 
-export function sort(response, sortColumn) {
+export function sortRemoteHandler(response, column) {
   return dispatch => {
     // Append the data.
     dispatch({
@@ -78,17 +100,23 @@ export function sort(response, sortColumn) {
     });
 
     // Finish the sort.
-    dispatch(GriddleActions.sort(sortColumn));
+    dispatch(GriddleActions.sort(column));
   };
 }
 
-export function sortRemote(tableState) {
+export function addSortColumn(store, column) {
+  let tableState = getTableState(store);
+  tableState = {
+    ...tableState,
+    column: tableState.column.concat(column)
+  };
+
   return makeRequest(tableState, (response) => {
-    return sort(response, tableState.sortColumn);
+    return addSortColumnRemoteHandler(response, column);
   });
 }
 
-export function addSortColumn(response, sortColumn) {
+export function addSortColumnRemoteHandler(response, column) {
   return dispatch => {
     // Append the data.
     dispatch({
@@ -99,17 +127,19 @@ export function addSortColumn(response, sortColumn) {
     });
 
     // Finish the sort.
-    dispatch(GriddleActions.addSortColumn(sortColumn));
+    dispatch(GriddleActions.addSortColumn(column));
   };
 }
 
-export function addSortColumnRemote(tableState) {
+export function loadNext(store) {
+  const tableState = getTableState(store);
+
   return makeRequest(tableState, (response) => {
-    return addSortColumn(response, tableState.sortColumn);
+    return loadNextRemoteHandler(response);
   });
 }
 
-export function loadNext(response) {
+export function loadNextRemoteHandler(response) {
   return dispatch => {
     // Append the data.
     dispatch({
@@ -124,13 +154,15 @@ export function loadNext(response) {
   }
 }
 
-export function loadNextRemote(tableState) {
+export function loadPrevious(store) {
+  const tableState = getTableState(store);
+
   return makeRequest(tableState, (response) => {
-    return loadNext(response);
+    return loadPreviousRemoteHandler(response);
   });
 }
 
-export function loadPrevious(response) {
+export function loadPreviousRemoteHandler(response) {
   return dispatch => {
     // Append the data.
     dispatch({
@@ -145,13 +177,19 @@ export function loadPrevious(response) {
   };
 }
 
-export function loadPreviousRemote(tableState) {
+export function loadPage(store, number) {
+  const tableState = {
+    ...getTableState(store),
+    page: number
+  };
+
   return makeRequest(tableState, (response) => {
-    return loadPrevious(response);
+    return loadPageRemoteHandler(response, number);
   });
 }
 
-export function loadPage(response) {
+
+export function loadPageRemoteHandler(response, number) {
   return dispatch => {
     // Replace the data.
     dispatch({
@@ -162,12 +200,7 @@ export function loadPage(response) {
     });
 
     // Load the specified page, now that we have the data.
-    dispatch(GriddleActions.loadPage(response.page));
+    dispatch(GriddleActions.loadPage(number));
   };
 }
 
-export function loadPageRemote(tableState) {
-  return makeRequest(tableState, (response) => {
-    return loadPage(response);
-  });
-}

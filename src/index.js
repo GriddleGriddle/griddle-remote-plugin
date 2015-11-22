@@ -1,3 +1,4 @@
+import * as actions from './actions';
 import * as constants from './constants';
 import * as helpers from './helpers';
 import * as reducer from './reducer';
@@ -7,6 +8,15 @@ export default function RemotePlugin(provider, remoteConfig) {
   return {
     name: 'GriddleRemote',
     actions: combineRemoteActions(provider, remoteConfig),
+    storeBoundActions: [
+      actions.filterData,
+      actions.setPageSize,
+      actions.sort,
+      actions.addSortColumn,
+      actions.loadNext,
+      actions.loadPrevious,
+      actions.loadPage
+    ],
     constants,
     helpers: helpers,
     states: initialState,
