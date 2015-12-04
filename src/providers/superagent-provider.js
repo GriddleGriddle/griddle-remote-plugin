@@ -1,16 +1,13 @@
 import request from 'superagent';
 
-function makeRequest(remoteConfig, tableState, successDispatch) {
-  dispatch => {
-    // Indicate that our AJAX request is starting.
-    dispatch(startLoading());
-
+export function makeRequest (remoteConfig, tableState, successDispatch, remoteError) {
+  return dispatch => {
     const { url, requestHeaders, formatRequest, formatSuccess, formatError } = remoteConfig;
 
     // Set up the request.
     let loadRequest = request.get(url);
 
-    // If the request needs to be constructed differently, pass to the override function.
+    // If the   request needs to be constructed differently, pass to the override function.
     if (formatRequest) {
       loadRequest = formatRequest(loadRequest, tableState);
     } else {
@@ -41,7 +38,7 @@ function makeRequest(remoteConfig, tableState, successDispatch) {
         }
 
         // Dispatch the success
-        dispatch(successDispatch);
+        dispatch(this.successDispatch);
       } else {
         let errorResponse = res.body;
 

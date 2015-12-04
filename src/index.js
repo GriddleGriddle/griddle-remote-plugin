@@ -3,12 +3,17 @@ import * as constants from './constants';
 import * as helpers from './helpers';
 import * as reducers from './reducer';
 import { default as initialState } from './initial-state';
-import combineRemoteActions from './util/combine-remote-actions';
+import bindRemoteProvider from './util/bind-remote-provider';
+//import combineRemoteActions from './util/combine-remote-actions';
+
+// Remote providers
+export * as superagentProvider from './providers/superagent-provider';
 
 export function RemotePlugin(provider, remoteConfig) {
+  const remoteProvider = bindRemoteProvider(provider, remoteConfig);
   return {
     name: 'GriddleRemote',
-    actions: combineRemoteActions(provider, remoteConfig),
+    actions: actions,
     storeBoundActions: [
       actions.filterData,
       actions.setPageSize,
@@ -20,11 +25,8 @@ export function RemotePlugin(provider, remoteConfig) {
     ],
     constants,
     helpers: helpers,
-    states: initialState,
+    states: initialState(remoteProvider),
     reducers,
     components: {}
   };
 };
-
-// Remote providers
-export superagentProvider from './providers/superagent-provider';

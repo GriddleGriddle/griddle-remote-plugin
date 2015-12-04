@@ -1,6 +1,6 @@
 import * as actions from '../actions';
 
-export default function getTableState(store) {
+export function getTableState(store) {
   const state = store.getState();
 
   return {
@@ -10,4 +10,10 @@ export default function getTableState(store) {
     sortColumn: state.getIn(['sortProperties', 'sortColumns']),
     sortDirection: state.getIn(['sortProperties', 'sortAscending']) ? 'asc' : 'desc'
   };
+}
+
+export function getRemoteProvider(store) {
+  const state = store.getState();
+
+  return state.get('remoteProvider').toJS();
 }

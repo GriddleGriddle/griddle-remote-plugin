@@ -1,5 +1,5 @@
 import * as types from './constants';
-import getTableState from './util/get-table-state';
+import { getTableState, getRemoteProvider } from './util/store-util';
 import { GriddleActions } from 'griddle-core';
 
 export function remoteError(err, response) {
@@ -10,6 +10,20 @@ export function remoteError(err, response) {
   };
 }
 
+export function makeRequest(remoteProvider, tableState, successDispatch) {
+  return dispatch => {
+    // Indicate that our AJAX request is starting.
+    dispatch(startLoading());
+
+    if (!remoteProvider || !remoteProvider.makeRequest) {
+      console.error('No provider has been configured. Please ensure that a provider has been passed in to the griddle-remote-plugin.');
+    }
+
+    // Make the request.
+    dispatch(remoteProvider.makeRequest(tableState, successDispatch, remoteError));
+  }
+}
+
 export function startLoading() {
   return {
     type: types.GRIDDLE_START_LOADING
@@ -17,7 +31,7 @@ export function startLoading() {
 }
 
 export function initializeGrid() {
-  dispatch => {
+  return dispatch => {
     // Initialize the grid.
     dispatch(GriddleActions.initializeGrid());
 
@@ -31,8 +45,9 @@ export function filterData(store, filter) {
     ...getTableState(store),
     filter
   };
+  const remoteProvider = getRemoteProvider(store);
 
-  return makeRequest(tableState, (response) => {
+  return makeRequest(remoteProvider, tableState, (response) => {
     return filterDataRemoteHandler(response, filter);
   });
 }
@@ -57,8 +72,9 @@ export function setPageSize(store, pageSize) {
     ...getTableState(store),
     pageSize
   };
+  const remoteProvider = getRemoteProvider(store);
 
-  return makeRequest(tableState, (response) => {
+  return makeRequest(remoteProvider, tableState, (response) => {
     return setPageSizeRemoteHandler(response, pageSize);
   });
 }
@@ -83,8 +99,9 @@ export function sort(store, column) {
     ...getTableState(store),
     column: [column]
   };
+  const remoteProvider = getRemoteProvider(store);
 
-  return makeRequest(tableState, (response) => {
+  return makeRequest(remoteProvider, tableState, (response) => {
     return sortRemoteHandler(response, column);
   });
 }
@@ -110,8 +127,9 @@ export function addSortColumn(store, column) {
     ...tableState,
     column: tableState.column.concat(column)
   };
+  const remoteProvider = getRemoteProvider(store);
 
-  return makeRequest(tableState, (response) => {
+  return makeRequest(remoteProvider, tableState, (response) => {
     return addSortColumnRemoteHandler(response, column);
   });
 }
@@ -133,8 +151,9 @@ export function addSortColumnRemoteHandler(response, column) {
 
 export function loadNext(store) {
   const tableState = getTableState(store);
+  const remoteProvider = getRemoteProvider(store);
 
-  return makeRequest(tableState, (response) => {
+  return makeRequest(remoteProvider, tableState, (response) => {
     return loadNextRemoteHandler(response);
   });
 }
@@ -156,8 +175,9 @@ export function loadNextRemoteHandler(response) {
 
 export function loadPrevious(store) {
   const tableState = getTableState(store);
+  const remoteProvider = getRemoteProvider(store);
 
-  return makeRequest(tableState, (response) => {
+  return makeRequest(remoteProvider, tableState, (response) => {
     return loadPreviousRemoteHandler(response);
   });
 }
@@ -182,8 +202,9 @@ export function loadPage(store, number) {
     ...getTableState(store),
     page: number
   };
+  const remoteProvider = getRemoteProvider(store);
 
-  return makeRequest(tableState, (response) => {
+  return makeRequest(remoteProvider, tableState, (response) => {
     return loadPageRemoteHandler(response, number);
   });
 }
