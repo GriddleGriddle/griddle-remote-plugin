@@ -15,6 +15,7 @@ export function RemotePlugin(provider, remoteConfig) {
     name: 'GriddleRemote',
     actions: actions,
     storeBoundActions: [
+      actions.initializeGrid,
       actions.filterData,
       actions.setPageSize,
       actions.sort,

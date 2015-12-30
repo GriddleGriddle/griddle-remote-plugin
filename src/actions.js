@@ -30,13 +30,20 @@ export function startLoading() {
   };
 }
 
-export function initializeGrid() {
+export function loadData(data) {
+  return {
+    type: types.GRIDDLE_LOADED_DATA,
+    data
+  };
+}
+
+export function initializeGrid(store, properties) {
   return dispatch => {
     // Initialize the grid.
-    dispatch(GriddleActions.initializeGrid());
+    dispatch(GriddleActions.initializeGrid(properties));
 
     // Load the first page of results.
-    dispatch(loadPage(1));
+    dispatch(loadPage(store, 1));
   }
 }
 

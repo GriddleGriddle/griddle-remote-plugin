@@ -19,5 +19,5 @@ export function getSortedData(data, columns, sortAscending = true) {
 // Override of implementation from 'local-helpers'
 export function sortByColumns(state, columns, sortAscending = null) {
   // Simply return the data.
-  return state.get('data');
+  return state;
 }

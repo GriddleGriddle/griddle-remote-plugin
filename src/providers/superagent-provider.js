@@ -34,11 +34,11 @@ export function makeRequest (remoteConfig, tableState, successDispatch, remoteEr
 
         // Format if necessary.
         if (formatSuccess) {
-          successResponse = formatSuccess(successResponse);
+          successResponse = formatSuccess(successResponse, tableState);
         }
 
         // Dispatch the success
-        dispatch(this.successDispatch);
+        dispatch(successDispatch(successResponse));
       } else {
         let errorResponse = res.body;
 

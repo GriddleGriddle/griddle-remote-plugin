@@ -1,6 +1,8 @@
+import Immutable from 'immutable';
+
 function updateData(data, pagesLoaded, state, action, helpers) {
   const loadsInProgress = state.get('loadsInProgress') - 1;
-  state = state.set('data', data)
+  state = state.set('data', helpers.addKeyToRows(Immutable.fromJS(data)))
               .setIn(['pageProperties', 'currentPage'], action.currentPage)
               .setIn(['pageProperties', 'maxPage'], action.maxPage)
               .set('pagesLoaded', pagesLoaded)
