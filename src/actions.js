@@ -1,6 +1,17 @@
 import * as types from './constants';
 import { getTableState, getRemoteProvider } from './util/store-util';
 import { GriddleActions } from 'griddle-core';
+import Immutable from 'immutable';
+
+function remoteAction(actionType, response) {
+  return {
+    type: actionType,
+    currentPage: response.page,
+    maxPage: response.maxPage,
+    totalCount: response.totalCount,
+    data: Immutable.fromJS(response.data)
+  };
+}
 
 export function remoteError(err, response) {
   // TODO: Include a little more information about this error.
@@ -62,12 +73,7 @@ export function filterData(store, filter) {
 export function filterDataRemoteHandler(response, filter) {
   return dispatch => {
     // Append the data.
-    dispatch({
-      type: types.GRIDDLE_REMOTE_REPLACE_DATA,
-      currentPage: response.page,
-      maxPage: response.maxPage,
-      data: response.data
-    });
+    dispatch(remoteAction(types.GRIDDLE_REMOTE_REPLACE_DATA, response));
 
     // Execute the filter.
     dispatch(GriddleActions.filterData(filter));
@@ -89,12 +95,7 @@ export function setPageSize(store, pageSize) {
 export function setPageSizeRemoteHandler(response, pageSize) {
   return dispatch => {
     // Append the data.
-    dispatch({
-      type: types.GRIDDLE_REMOTE_REPLACE_DATA,
-      currentPage: response.page,
-      maxPage: response.maxPage,
-      data: response.data
-    });
+    dispatch(remoteAction(types.GRIDDLE_REMOTE_REPLACE_DATA, response));
 
     // Set the page size.
     dispatch(GriddleActions.setPageSize(pageSize));
@@ -116,12 +117,7 @@ export function sort(store, column) {
 export function sortRemoteHandler(response, column) {
   return dispatch => {
     // Append the data.
-    dispatch({
-      type: types.GRIDDLE_REMOTE_REPLACE_DATA,
-      currentPage: response.page,
-      maxPage: response.maxPage,
-      data: response.data
-    });
+    dispatch(remoteAction(types.GRIDDLE_REMOTE_REPLACE_DATA, response));
 
     // Finish the sort.
     dispatch(GriddleActions.sort(column));
@@ -130,10 +126,7 @@ export function sortRemoteHandler(response, column) {
 
 export function addSortColumn(store, column) {
   let tableState = getTableState(store);
-  tableState = {
-    ...tableState,
-    column: tableState.column.concat(column)
-  };
+  tableState.column = tableState.column.concat(column);
   const remoteProvider = getRemoteProvider(store);
 
   return makeRequest(remoteProvider, tableState, (response) => {
@@ -144,12 +137,7 @@ export function addSortColumn(store, column) {
 export function addSortColumnRemoteHandler(response, column) {
   return dispatch => {
     // Append the data.
-    dispatch({
-      type: types.GRIDDLE_REMOTE_REPLACE_DATA,
-      currentPage: response.page,
-      maxPage: response.maxPage,
-      data: response.data
-    });
+    dispatch(remoteAction(types.GRIDDLE_REMOTE_REPLACE_DATA, response));
 
     // Finish the sort.
     dispatch(GriddleActions.addSortColumn(column));
@@ -157,7 +145,8 @@ export function addSortColumnRemoteHandler(response, column) {
 }
 
 export function loadNext(store) {
-  const tableState = getTableState(store);
+  let tableState = getTableState(store);
+  tableState.page++;
   const remoteProvider = getRemoteProvider(store);
 
   return makeRequest(remoteProvider, tableState, (response) => {
@@ -168,12 +157,7 @@ export function loadNext(store) {
 export function loadNextRemoteHandler(response) {
   return dispatch => {
     // Append the data.
-    dispatch({
-      type: types.GRIDDLE_REMOTE_APPEND_DATA,
-      currentPage: response.page,
-      maxPage: response.maxPage,
-      data: response.data
-    });
+    dispatch(remoteAction(types.GRIDDLE_REMOTE_APPEND_DATA, response));
 
     // Load the next page, now that we have the data.
     dispatch(GriddleActions.loadNext());
@@ -181,7 +165,8 @@ export function loadNextRemoteHandler(response) {
 }
 
 export function loadPrevious(store) {
-  const tableState = getTableState(store);
+  let tableState = getTableState(store);
+  tableState.page--;
   const remoteProvider = getRemoteProvider(store);
 
   return makeRequest(remoteProvider, tableState, (response) => {
@@ -192,12 +177,7 @@ export function loadPrevious(store) {
 export function loadPreviousRemoteHandler(response) {
   return dispatch => {
     // Append the data.
-    dispatch({
-      type: types.GRIDDLE_REMOTE_PREPEND_DATA,
-      currentPage: response.page,
-      maxPage: response.maxPage,
-      data: response.data
-    });
+    dispatch(remoteAction(types.GRIDDLE_REMOTE_PREPEND_DATA, response));
 
     // Load the previous page, now that we have the data.
     dispatch(GriddleActions.loadPrevious());
@@ -220,12 +200,7 @@ export function loadPage(store, number) {
 export function loadPageRemoteHandler(response, number) {
   return dispatch => {
     // Replace the data.
-    dispatch({
-      type: types.GRIDDLE_REMOTE_REPLACE_DATA,
-      currentPage: response.page,
-      maxPage: response.maxPage,
-      data: response.data
-    });
+    dispatch(remoteAction(types.GRIDDLE_REMOTE_REPLACE_DATA, response));
 
     // Load the specified page, now that we have the data.
     dispatch(GriddleActions.loadPage(number));
