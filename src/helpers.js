@@ -1,7 +1,6 @@
 // Override of implementation from 'local-helpers'
 export function getPageData(state, pageSize, currentPage) {
   const remoteDataIndex = state.get('pagesLoaded').indexOf(currentPage);
-  debugger;
   return helpers.getDataSet(state).skip(pageSize * (remoteDataIndex)).take(pageSize);
 }
 

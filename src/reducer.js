@@ -30,7 +30,6 @@ export function GRIDDLE_REMOTE_APPEND_DATA(state, action, helpers) {
 export function GRIDDLE_REMOTE_PREPEND_DATA(state, action, helpers) {
   const prependedData = action.data.concat(state.get('data'));
   const loadedPages = Immutable.fromJS([action.currentPage]).concat(state.get('pagesLoaded'));
-  debugger;
 
   return updateData(prependedData, loadedPages, state, action, helpers);
 }
