@@ -1,5 +1,5 @@
 import * as types from './constants';
-import { getTableState, getRemoteProvider } from './util/store-util';
+import { getTableState, getRemoteProvider, getPagesLoaded } from './util/store-util';
 import { GriddleActions } from 'griddle-core';
 import Immutable from 'immutable';
 
@@ -149,6 +149,12 @@ export function loadNext(store) {
   tableState.page++;
   const remoteProvider = getRemoteProvider(store);
 
+  // If this is a page that has already been loaded, simply load the page.
+  const loadedPages = getPagesLoaded(store);
+  if (loadedPages.includes(tableState.page)) {
+    return GriddleActions.loadNext();
+  }
+
   return makeRequest(remoteProvider, tableState, (response) => {
     return loadNextRemoteHandler(response);
   });
@@ -168,6 +174,12 @@ export function loadPrevious(store) {
   let tableState = getTableState(store);
   tableState.page--;
   const remoteProvider = getRemoteProvider(store);
+
+  // If this is a page that has already been loaded, simply load the page.
+  const loadedPages = getPagesLoaded(store);
+  if (loadedPages.includes(tableState.page)) {
+    return GriddleActions.loadPrevious();
+  }
 
   return makeRequest(remoteProvider, tableState, (response) => {
     return loadPreviousRemoteHandler(response);
@@ -191,6 +203,13 @@ export function loadPage(store, number) {
   };
   const remoteProvider = getRemoteProvider(store);
 
+  // If this is a page that has already been loaded, simply load the page.
+  const loadedPages = getPagesLoaded(store);
+  if (loadedPages.includes(tableState.page)) {
+    return GriddleActions.loadPage(number);
+  }
+
+  // Make a remote request.
   return makeRequest(remoteProvider, tableState, (response) => {
     return loadPageRemoteHandler(response, number);
   });

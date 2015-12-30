@@ -12,6 +12,12 @@ export function getTableState(store) {
   };
 }
 
+export function getPagesLoaded(store) {
+  const state = store.getState();
+
+  return state.get('pagesLoaded');
+}
+
 export function getRemoteProvider(store) {
   const state = store.getState();
 

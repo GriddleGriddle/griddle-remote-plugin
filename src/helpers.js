@@ -10,11 +10,6 @@ export function getDataSetSize(state) {
 }
 
 // Override of implementation from 'local-helpers'
-export function getPage(state, pageNumber) {
-  return state;
-}
-
-// Override of implementation from 'local-helpers'
 export function filterData(data, filter) {
   // Simply return the data.
   return data;
