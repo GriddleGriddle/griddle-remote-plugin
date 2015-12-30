@@ -1,8 +1,8 @@
+import Immutable from 'immutable';
 
 function updateData(data, pagesLoaded, state, action, helpers) {
   const loadsInProgress = state.get('loadsInProgress') - 1;
   state = state.set('data', helpers.addKeyToRows(data))
-              .setIn(['pageProperties', 'currentPage'], action.currentPage)
               .setIn(['pageProperties', 'maxPage'], action.maxPage)
               .set('totalItemCount', action.totalCount)
               .set('pagesLoaded', pagesLoaded)
@@ -28,8 +28,9 @@ export function GRIDDLE_REMOTE_APPEND_DATA(state, action, helpers) {
 }
 
 export function GRIDDLE_REMOTE_PREPEND_DATA(state, action, helpers) {
-  const prependedData = state.get('data').splice(0, 0, action.data);
-  const loadedPages = state.get('pagesLoaded').splice(0, 0, action.currentPage);
+  const prependedData = action.data.concat(state.get('data'));
+  const loadedPages = Immutable.fromJS([action.currentPage]).concat(state.get('pagesLoaded'));
+  debugger;
 
   return updateData(prependedData, loadedPages, state, action, helpers);
 }
