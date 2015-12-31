@@ -1,5 +1,5 @@
 import * as types from './constants';
-import { getTableState, getRemoteProvider, getPagesLoaded } from './util/store-util';
+import { getTableState, getRemoteProvider, getPagesLoaded, getUpdatedSortDirection } from './util/store-util';
 import { GriddleActions } from 'griddle-core';
 import Immutable from 'immutable';
 
@@ -105,7 +105,8 @@ export function setPageSizeRemoteHandler(response, pageSize) {
 export function sort(store, column) {
   const tableState = {
     ...getTableState(store),
-    column: [column]
+    sortColumn: [column],
+    sortDirection: getUpdatedSortDirection(store, column)
   };
   const remoteProvider = getRemoteProvider(store);
 
