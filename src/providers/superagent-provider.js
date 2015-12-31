@@ -17,7 +17,7 @@ export function makeRequest (remoteConfig, tableState, successDispatch, remoteEr
       loadRequest = loadRequest.query({ page: page,
                                         pageSize: pageSize,
                                         filter: filter,
-                                        sortColumn: sortColumn,
+                                        sortColumn: (sortColumn && sortColumn.size > 0) ? sortColumn : '',
                                         sortDirection: sortDirection });
 
       // Add any headers added to the remote config

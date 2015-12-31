@@ -61,6 +61,7 @@ export function initializeGrid(store, properties) {
 export function filterData(store, filter) {
   const tableState = {
     ...getTableState(store),
+    page: 1,
     filter
   };
   const remoteProvider = getRemoteProvider(store);
@@ -83,6 +84,7 @@ export function filterDataRemoteHandler(response, filter) {
 export function setPageSize(store, pageSize) {
   const tableState = {
     ...getTableState(store),
+    page: 1,
     pageSize
   };
   const remoteProvider = getRemoteProvider(store);
