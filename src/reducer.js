@@ -6,14 +6,16 @@ function updateData(data, pagesLoaded, state, action, helpers) {
               .setIn(['pageProperties', 'maxPage'], action.maxPage)
               .set('totalItemCount', action.totalCount)
               .set('pagesLoaded', pagesLoaded)
-              .set('loadsInProgress', loadsInProgress >= 0 ? loadsInProgress : 0);
+              .set('loadsInProgress', loadsInProgress >= 0 ? loadsInProgress : 0)
+              .set('loading', false);
 
   return helpers.updateVisibleData(state);
 }
 
 export function GRIDDLE_START_LOADING(state, action, helpers) {
   return state.set('loadsInProgress', state.get('loadsInProgress') + 1)
-              .set('loadError', false);
+              .set('loadError', false)
+              .set('loading', true);
 }
 
 export function GRIDDLE_REMOTE_REPLACE_DATA(state, action, helpers) {
