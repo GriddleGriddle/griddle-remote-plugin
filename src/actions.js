@@ -107,6 +107,7 @@ export function setPageSizeRemoteHandler(response, pageSize) {
 export function sort(store, column) {
   const tableState = {
     ...getTableState(store),
+    page: 1, // Reset the page
     sortColumn: [column],
     sortDirection: getUpdatedSortDirection(store, column)
   };
