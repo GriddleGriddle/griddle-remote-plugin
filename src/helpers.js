@@ -1,3 +1,5 @@
+import { GriddleHelpers } from 'griddle-core';
+
 // Override of implementation from 'local-helpers'
 export function getPageData(state, pageSize, currentPage) {
   const remoteDataIndex = state.get('pagesLoaded').indexOf(currentPage);
@@ -20,9 +22,11 @@ export function getVisibleData(state) {
   const pageSize = state.getIn(['pageProperties', 'pageSize']);
   const currentPage = state.getIn(['pageProperties', 'currentPage']);
   const remoteDataIndex = state.get('pagesLoaded').indexOf(currentPage);
+  const { getDataColumns, getVisibleDataColumns, getSortedColumns } = GriddleHelpers.data;
 
-  return getDataSet(state)
-    .skip(pageSize * (remoteDataIndex)).take(pageSize);
+  const data = getDataSet(state).skip(pageSize * (remoteDataIndex)).take(pageSize);
+  const columns = getDataColumns(state, data);
+  return getVisibleDataColumns(getSortedColumns(data, columns), columns);
 }
 
 // Override of implementation from 'local-helpers'
