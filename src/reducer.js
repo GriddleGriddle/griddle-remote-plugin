@@ -1,14 +1,10 @@
 import Immutable from 'immutable';
 
 function updateData(data, pagesLoaded, state, action, helpers) {
-  const loadsInProgress = state.get('loadsInProgress') - 1;
   state = state.set('data', helpers.addKeyToRows(data))
-              .setIn(['pageProperties', 'currentPage'], action.currentPage)
               .setIn(['pageProperties', 'maxPage'], action.maxPage)
               .set('totalItemCount', action.totalCount)
-              .set('pagesLoaded', pagesLoaded)
-              .set('loadsInProgress', loadsInProgress >= 0 ? loadsInProgress : 0)
-              .set('loading', false);
+              .set('pagesLoaded', pagesLoaded);
 
   return helpers.updateVisibleData(state);
 }
@@ -19,8 +15,16 @@ export function GRIDDLE_START_LOADING(state, action, helpers) {
               .set('loading', true);
 }
 
+export function GRIDDLE_STOP_LOADING(state, action, helpers) {
+  const loadsInProgress = state.get('loadsInProgress') - 1;
+  const newLoadsInProgress = loadsInProgress >= 0 ? loadsInProgress : 0;
+  return state.set('loadsInProgress', newLoadsInProgress)
+              .set('loading', newLoadsInProgress !== 0);
+}
+
 export function GRIDDLE_REMOTE_REPLACE_DATA(state, action, helpers) {
-  return updateData(action.data, [action.currentPage], state, action, helpers);
+  const tempState = state.setIn(['pageProperties', 'currentPage'], action.currentPage)
+  return updateData(action.data, [action.currentPage], tempState, action, helpers);
 }
 
 export function GRIDDLE_REMOTE_APPEND_DATA(state, action, helpers) {

@@ -78,6 +78,9 @@ export function filterDataRemoteHandler(response, filter) {
 
     // Execute the filter.
     dispatch(GriddleActions.filterData(filter));
+
+    // Indicate that we're done loading.
+    dispatch({ type: types.GRIDDLE_STOP_LOADING });
   };
 }
 
@@ -101,6 +104,9 @@ export function setPageSizeRemoteHandler(response, pageSize) {
 
     // Set the page size.
     dispatch(GriddleActions.setPageSize(pageSize));
+
+    // Indicate that we're done loading.
+    dispatch({ type: types.GRIDDLE_STOP_LOADING });
   };
 }
 
@@ -125,6 +131,9 @@ export function sortRemoteHandler(response, column) {
 
     // Finish the sort.
     dispatch(GriddleActions.sort(column));
+
+    // Indicate that we're done loading.
+    dispatch({ type: types.GRIDDLE_STOP_LOADING });
   };
 }
 
@@ -145,6 +154,9 @@ export function addSortColumnRemoteHandler(response, column) {
 
     // Finish the sort.
     dispatch(GriddleActions.addSortColumn(column));
+
+    // Indicate that we're done loading.
+    dispatch({ type: types.GRIDDLE_STOP_LOADING });
   };
 }
 
@@ -171,6 +183,9 @@ export function loadNextRemoteHandler(response) {
 
     // Load the next page, now that we have the data.
     dispatch(GriddleActions.loadNext());
+
+    // Indicate that we're done loading.
+    dispatch({ type: types.GRIDDLE_STOP_LOADING });
   }
 }
 
@@ -197,6 +212,9 @@ export function loadPreviousRemoteHandler(response) {
 
     // Load the previous page, now that we have the data.
     dispatch(GriddleActions.loadPrevious());
+
+    // Indicate that we're done loading.
+    dispatch({ type: types.GRIDDLE_STOP_LOADING });
   };
 }
 
@@ -227,6 +245,9 @@ export function loadPageRemoteHandler(response, number) {
 
     // Load the specified page, now that we have the data.
     dispatch(GriddleActions.loadPage(number));
+
+    // Indicate that we're done loading.
+    dispatch({ type: types.GRIDDLE_STOP_LOADING });
   };
 }
 
